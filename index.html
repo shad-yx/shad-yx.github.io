@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio — 3D Generalist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: oklch(0.13 0.008 60);
+    --bg-2: oklch(0.16 0.01 55);
+    --surface: oklch(0.18 0.012 55);
+    --line: oklch(0.27 0.012 60);
+    --fg: oklch(0.95 0.005 80);
+    --muted: oklch(0.62 0.012 70);
+    --dim: oklch(0.46 0.012 65);
+    --accent: oklch(0.74 0.13 55);
+    --accent-dim: oklch(0.55 0.11 50);
+
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --sans: "Schibsted Grotesk", -apple-system, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+
+    --maxw: 1240px;
+    --pad: clamp(20px, 4vw, 56px);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    text-wrap: pretty;
+  }
+
+  /* ───── Film grain overlay (PSX flavor, subtle) ───── */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0'/></filter><rect width='180' height='180' filter='url(%23n)' opacity='0.9'/></svg>");
+  }
+  /* scanline shimmer */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99;
+    opacity: 0.025;
+    background: repeating-linear-gradient(0deg, transparent 0 2px, rgba(255,255,255,0.5) 2px 3px);
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ───── Top bar ───── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 18px var(--pad);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: linear-gradient(180deg, var(--bg) 30%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+  .topbar .mark { color: var(--fg); display: flex; align-items: center; gap: 10px; }
+  .topbar .mark::before {
+    content: "";
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 14px var(--accent);
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.55; transform: scale(0.85); }
+  }
+  .topbar nav { display: flex; gap: 28px; }
+  .topbar nav a { transition: color 0.2s; }
+  .topbar nav a:hover { color: var(--fg); }
+  .topbar .clock { color: var(--dim); }
+
+  /* ───── Layout ───── */
+  section {
+    padding: 0 var(--pad);
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+
+  .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .label::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ───── Pull quote ───── */
+  .pull-quote {
+    margin: 80px 0 0;
+    padding: 28px 0 28px 28px;
+    border-left: 1px solid var(--accent-dim);
+    max-width: 760px;
+  }
+  .pull-quote blockquote {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+  }
+  .pull-quote blockquote em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .pull-quote figcaption {
+    margin-top: 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ───── HERO ───── */
+  .hero {
+    min-height: 100vh;
+    padding-top: 18vh;
+    padding-bottom: 8vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(60px, 11vw, 168px);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    margin-top: 28px;
+  }
+  .hero-title .italic {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .hero-title .thin {
+    color: var(--muted);
+  }
+
+  .hero-meta {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: end;
+  }
+  .hero-meta .col-1 p {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--fg);
+    max-width: 52ch;
+  }
+  .hero-meta .col-1 p + p { margin-top: 14px; color: var(--muted); }
+  .hero-meta .col-1 em {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--accent);
+    font-size: 1.12em;
+  }
+
+  .hero-meta .col-2 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .hero-meta .col-2 .row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed var(--line);
+    padding: 6px 0;
+  }
+  .hero-meta .col-2 .row span:last-child { color: var(--fg); }
+
+  .scroll-hint {
+    margin-top: 80px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--dim);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scroll-hint .line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--dim), transparent);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-hint .line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    animation: trickle 2.4s linear infinite;
+  }
+  @keyframes trickle {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* ───── Marquee ticker ───── */
+  .ticker {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin: 100px 0 0;
+    padding: 22px 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: var(--bg-2);
+  }
+  .ticker-track {
+    display: flex;
+    gap: 60px;
+    width: max-content;
+    animation: scroll-x 50s linear infinite;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 38px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .ticker-track span { display: inline-flex; align-items: center; gap: 60px; }
+  .ticker-track span::after {
+    content: "✦";
+    color: var(--accent);
+    font-style: normal;
+    font-size: 22px;
+  }
+  @keyframes scroll-x {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ───── About / Capabilities ───── */
+  .about {
+    padding-top: 140px;
+    padding-bottom: 80px;
+  }
+  .about-head {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 56px;
+    align-items: start;
+    margin-bottom: 60px;
+  }
+  .about-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4.5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .about-head h2 em { font-style: italic; color: var(--accent); }
+  .about-head .body {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 56ch;
+  }
+  .about-head .body strong { color: var(--fg); font-weight: 500; }
+
+  .capabilities {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .cap {
+    background: var(--bg);
+    padding: 28px 24px 32px;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .cap:hover { background: var(--bg-2); }
+  .cap .num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .cap h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 26px;
+    margin-top: 16px;
+    line-height: 1.1;
+  }
+  .cap ul {
+    list-style: none;
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .cap ul li::before {
+    content: "→  ";
+    color: var(--dim);
+  }
+
+  /* ───── Projects ───── */
+  .projects {
+    padding-top: 140px;
+    padding-bottom: 120px;
+  }
+  .projects-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .projects-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(42px, 5.5vw, 80px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .projects-head h2 em { font-style: italic; color: var(--accent); }
+  .projects-head .count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  .project {
+    border-top: 1px solid var(--line);
+    padding: 36px 0 56px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .project:last-of-type { border-bottom: 1px solid var(--line); }
+
+  .project .meta {
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .project .meta .idx {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+  }
+  .project .meta h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(34px, 3.6vw, 52px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+  }
+  .project .meta h3 em { font-style: italic; color: var(--accent); }
+  .project .meta .desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 42ch;
+  }
+  .project .meta .specs {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.9;
+    margin-top: 8px;
+  }
+  .project .meta .specs .row {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 16px;
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .project .meta .specs .row .k { color: var(--muted); }
+  .project .meta .specs .row .v { color: var(--fg); }
+
+  .project .gallery {
+    display: grid;
+    gap: 14px;
+  }
+  .project .gallery.cols-2 { grid-template-columns: 1fr 1fr; }
+  .project .gallery .main {
+    grid-column: 1 / -1;
+  }
+  .project figure {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+  }
+  .project figure video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+  .project figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.8s cubic-bezier(.16,.84,.32,1), filter 0.6s;
+    filter: saturate(0.95);
+  }
+  .project figure:hover img {
+    transform: scale(1.03);
+    filter: saturate(1.05);
+  }
+  .project figure figcaption {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    padding: 5px 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ───── Services / Freelance ───── */
+  .services {
+    padding-top: 100px;
+    padding-bottom: 120px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .service {
+    border: 1px solid var(--line);
+    padding: 32px 28px;
+    background: var(--bg-2);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .service:hover {
+    border-color: var(--accent-dim);
+    transform: translateY(-2px);
+  }
+  .service .num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+  }
+  .service h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 32px;
+    margin-top: 18px;
+    line-height: 1.1;
+  }
+  .service h3 em { font-style: italic; color: var(--muted); }
+  .service p {
+    margin-top: 14px;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 48ch;
+  }
+
+  /* ───── Footer ───── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px var(--pad);
+    background: var(--bg-2);
+  }
+  .foot-wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+  .foot-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 120px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+  }
+  .foot-headline em { font-style: italic; color: var(--accent); }
+  .foot-cta {
+    margin-top: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--line);
+    padding: 16px 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .foot-cta:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .foot-cta::after {
+    content: "↗";
+    font-size: 16px;
+  }
+
+  .foot-grid {
+    margin-top: 90px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.9;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .foot-grid h4 {
+    color: var(--dim);
+    font-weight: 400;
+    margin-bottom: 8px;
+    font-size: 10px;
+  }
+  .foot-grid a { color: var(--fg); display: block; }
+  .foot-grid a:hover { color: var(--accent); }
+
+  .foot-bottom {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Reference block inside Nuketown */
+  .ref-block {
+    margin-top: 20px;
+    padding: 26px;
+    border: 1px dashed var(--line);
+    background: var(--bg-2);
+  }
+  .ref-block .ref-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .ref-block .ref-note {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .ref-block .ref-grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .ref-block figure {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    border: 1px solid var(--line);
+  }
+  .ref-block figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: saturate(0.85) brightness(0.92);
+    transition: filter 0.4s;
+  }
+  .ref-block figure:hover img { filter: saturate(1) brightness(1); }
+  .ref-block figure figcaption {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg);
+    background: rgba(0,0,0,0.6);
+    padding: 4px 7px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  @media (max-width: 700px) {
+    .ref-block .ref-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ───── Reveal animation ───── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 1s cubic-bezier(.16,.84,.32,1), transform 1s cubic-bezier(.16,.84,.32,1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal[data-delay="1"] { transition-delay: 0.08s; }
+  .reveal[data-delay="2"] { transition-delay: 0.16s; }
+  .reveal[data-delay="3"] { transition-delay: 0.24s; }
+  .reveal[data-delay="4"] { transition-delay: 0.32s; }
+
+  /* ───── Responsive ───── */
+  @media (max-width: 880px) {
+    .hero-meta { grid-template-columns: 1fr; gap: 32px; }
+    .about-head { grid-template-columns: 1fr; gap: 24px; }
+    .capabilities { grid-template-columns: repeat(2, 1fr); }
+    .project { grid-template-columns: 1fr; gap: 32px; }
+    .project .meta { position: static; }
+    .services-grid { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .topbar nav { display: none; }
+    .ticker-track { font-size: 28px; gap: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Top bar ─── -->
+<div class="topbar">
+  <div class="mark"></div>
+  <nav>
+    <a href="#work">
+</a>
+    <a href="#capabilities">
+</a>
+    <a href="#services">
+</a>
+  </nav>
+  <div class="clock" id="clock">— : — IST</div>
+</div>
+
+<!-- ─── Hero ─── -->
+<section class="hero" data-screen-label="01 Hero">
+  <div>
+    <div class="label reveal">Portfolio / 2026 — Vansh “Ru”</div>
+    <h1 class="hero-title reveal" data-delay="1">
+      Hi — I'm <span class="italic">Ru.</span><br>
+      I work between <span class="italic">worlds</span>:<br>
+      <span class="thin">engines, servers,</span> dreams.
+    </h1>
+  </div>
+
+  <figure class="pull-quote reveal" data-delay="2">
+    <blockquote>“Who looks outside, dreams;<br>who looks inside, <em>awakes.</em>”</blockquote>
+    <figcaption>— Carl Jung</figcaption>
+  </figure>
+
+  <div class="hero-meta">
+    <div class="col-1 reveal" data-delay="2">
+      <p>
+        Hey — I'm <em>Vansh</em>, but everyone calls me <em>Ru</em>. I'm a 3D generalist most at home in <em>environment design</em> and <em>retro-PSX</em> texture work, but the through-line of everything I do is the same: I like sitting at the intersection of <em>building, breaking, and understanding</em>.
+      </p>
+      <p>
+        On the craft side that's <em>Unreal Engine</em>, Blueprints, C++, Python, Blender, mocap and modding — environments, characters, tools. Off-screen the same instinct turns into <em>hardware, network design, server management and IT</em> — the quieter layer that lets the creative one actually run.
+      </p>
+      <p>
+        The reason it all sits together: <em>psychology &amp; neuroscience</em> are the soft science I read like other people read fiction, and I lucid dream often enough that the imagery from those nights feeds straight back into the renders. Build a world, then build the system that holds it up. That's the whole job.
+      </p>
+    </div>
+    <div class="col-2 reveal" data-delay="3">
+      <div class="row"><span>Name</span><span>Vansh — “Ru”</span></div>
+      <div class="row"><span>Discipline</span><span>3D / Env / Systems</span></div>
+      <div class="row"><span>Engines</span><span>Unreal · Blender</span></div>
+      <div class="row"><span>Code</span><span>C++ · Python · BP</span></div>
+      <div class="row"><span>Reading</span><span>Psych · Neuro</span></div>
+      <div class="row"><span>Based</span><span>Remote / IND</span></div>
+    </div>
+  </div>
+
+  <div class="scroll-hint reveal" data-delay="4">
+    <span>Scroll</span>
+    <span class="line"></span>
+    <span>S/N 0001</span>
+  </div>
+</section>
+
+<!-- ─── Ticker ─── -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>Environment Design</span>
+    <span>Retro PSX</span>
+    <span>Unreal Engine</span>
+    <span>Blender</span>
+    <span>TouchDesigner</span>
+    <span>C++ / Python</span>
+    <span>Mocap</span>
+    <span>Modding</span>
+    <span>Networks &amp; Servers</span>
+    <span>Hardware DIY</span>
+    <span>Lucid Geometry</span>
+    <span>Neuroscience</span>
+    <!-- duplicate for seamless loop -->
+    <span>Environment Design</span>
+    <span>Retro PSX</span>
+    <span>Unreal Engine</span>
+    <span>Blender</span>
+    <span>TouchDesigner</span>
+    <span>C++ / Python</span>
+    <span>Mocap</span>
+    <span>Modding</span>
+    <span>Networks &amp; Servers</span>
+    <span>Hardware DIY</span>
+    <span>Lucid Geometry</span>
+    <span>Neuroscience</span>
+  </div>
+</div>
+
+<!-- ─── About ─── -->
+<section class="about" id="capabilities" data-screen-label="02 About">
+  <div class="about-head">
+    <h2 class="reveal">A working <em>set</em><br>of disciplines.</h2>
+    <div class="body reveal" data-delay="1">
+      Real-time graphics, simulation, and the boxes that keep them online. <strong>Artist and operator</strong> — modelling a scene in the morning, racking a server by evening.
+    </div>
+  </div>
+
+  <div class="capabilities">
+    <div class="cap reveal">
+      <div class="num">01 / Craft</div>
+      <h3>Real-time<br>&amp; render</h3>
+      <ul>
+        <li>Unreal Engine</li>
+        <li>Blender</li>
+        <li>TouchDesigner</li>
+        <li>Lighting / shaders</li>
+      </ul>
+    </div>
+    <div class="cap reveal" data-delay="1">
+      <div class="num">02 / Code</div>
+      <h3>Tools<br>&amp; systems</h3>
+      <ul>
+        <li>C++ · Python</li>
+        <li>Blueprints</li>
+        <li>Pipeline scripts</li>
+      </ul>
+    </div>
+    <div class="cap reveal" data-delay="2">
+      <div class="num">03 / Capture</div>
+      <h3>Motion<br>&amp; modding</h3>
+      <ul>
+        <li>Mocap + retargeting</li>
+        <li>VCam / Live Link</li>
+        <li>Mod &amp; map dev</li>
+      </ul>
+    </div>
+    <div class="cap reveal" data-delay="3">
+      <div class="num">04 / Infra</div>
+      <h3>Networks<br>&amp; iron</h3>
+      <ul>
+        <li>Network design</li>
+        <li>Server admin</li>
+        <li>Hardware DIY</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Practice (moved above Projects) ─── -->
+<section class="services" id="services" data-screen-label="03 Practice">
+  <div class="label reveal">Practice / What the work tends to be</div>
+  <h2 class="reveal" style="font-family: var(--serif); font-weight:400; font-size: clamp(36px, 4.5vw, 64px); line-height:1; letter-spacing:-0.02em; margin-top: 18px; max-width: 22ch;" data-delay="1">
+    The kinds of projects I <em style="font-style:italic;color:var(--accent);">end up</em> on.
+  </h2>
+
+  <div class="services-grid">
+    <div class="service reveal" data-delay="1">
+      <div class="num">— Real-time / Visual</div>
+      <h3>Unreal supervision<br><em>for music videos &amp; experimental shoots.</em></h3>
+      <p>Pipeline lead and on-set support for music videos and experimental projects — scene assembly, virtual production prep, asset wrangling, render direction and shot-level problem-solving in Unreal Engine. Where my environment work meets a real camera.</p>
+    </div>
+    <div class="service reveal" data-delay="2">
+      <div class="num">— Systems / Backbone</div>
+      <h3>Network &amp; systems<br><em>for studios and independent operators.</em></h3>
+      <p>Freelance network design, server management, IT support and hardware DIY for small studios — the unglamorous layer underneath the creative one. Same hands that build the worlds also rack the boxes that render them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Projects ─── -->
+<section class="projects" id="work" data-screen-label="04 Projects">
+  <div class="projects-head">
+    <h2 class="reveal">Selected <em>work</em>.</h2>
+    <div class="count reveal" data-delay="1">05 of 05 — More incoming</div>
+  </div>
+
+  <!-- Project 01 — Nuketown -->
+  <article class="project" data-screen-label="Project · Nuketown Remix">
+    <div class="meta">
+      <div class="idx reveal">PRJ — 001 / Environment</div>
+      <h3 class="reveal" data-delay="1">The town that <em>cracked open</em>.</h3>
+      <p class="desc reveal" data-delay="2">
+        Environment-concept assignment: take a multiplayer map from a pre-2011 shooter and rebuild it under a new theme. I pulled the suburban shell of the original and grew something through it — a bone-dry cult town with a tree the size of the house erupting from inside, half-built mannequins watching the road, and a sign that reads less like a welcome and more like a warning.
+      </p>
+      <div class="specs reveal" data-delay="3">
+        <div class="row"><span class="k">Year</span><span class="v">2025</span></div>
+        <div class="row"><span class="k">Role</span><span class="v">Concept + 3D</span></div>
+        <div class="row"><span class="k">Tools</span><span class="v">Blender · UE · Photoshop</span></div>
+        <div class="row"><span class="k">Brief</span><span class="v">Re-theme an existing map</span></div>
+        <div class="row"><span class="k">Output</span><span class="v">Two final renders + blockout</span></div>
+      </div>
+    </div>
+    <div class="gallery">
+      <figure class="main reveal">
+        <img src="assets/nuketown-render.png" alt="Nuketown re-themed — final render 01" loading="lazy" />
+        <figcaption>01 — Final render</figcaption>
+      </figure>
+      <figure class="main reveal" data-delay="1">
+        <img src="assets/nuketown-concept.png" alt="Nuketown re-themed — final render 02" loading="lazy" />
+        <figcaption>02 — Final render, alt framing</figcaption>
+      </figure>
+      <figure class="main reveal" data-delay="2">
+        <img src="assets/nuketown-blockout.png" alt="Nuketown blockout in Blender" loading="lazy" />
+        <figcaption>03 — Blockout / Blender viewport</figcaption>
+      </figure>
+
+      <div class="ref-block reveal" data-delay="3">
+        <div class="ref-label">— Reference / original map</div>
+        <p class="ref-note">The starting point: screenshots of the original multiplayer map I was briefed to re-theme. Included here so the jury can read the remix against its source.</p>
+        <div class="ref-grid">
+          <figure>
+            <img src="assets/nuketown-ref-01.webp" alt="Original Nuketown reference, daytime" loading="lazy" />
+            <figcaption>R1 — Source map / day</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/nuketown-ref-02.webp" alt="Original Nuketown reference, retro-future" loading="lazy" />
+            <figcaption>R2 — Source map / signage</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Project 02 — Dream Render -->
+  <article class="project" data-screen-label="Project · Dream Render">
+    <div class="meta">
+      <div class="idx reveal">PRJ — 002 / Render</div>
+      <h3 class="reveal" data-delay="1">A room I <em>visited</em> in sleep.</h3>
+      <p class="desc reveal" data-delay="2">
+        One of an ongoing series of renders excavated directly from lucid dreams. Two chairs facing a hole-in-the-wall ocean, sand creeping inward, a guitar in the dust. I rebuild the geometry from memory as soon as I'm awake — fidelity to feeling first, accuracy second. The light, the proportions and the warmth are exactly as I remember them.
+      </p>
+      <div class="specs reveal" data-delay="3">
+        <div class="row"><span class="k">Year</span><span class="v">2025</span></div>
+        <div class="row"><span class="k">Role</span><span class="v">Modelling + Render</span></div>
+        <div class="row"><span class="k">Tools</span><span class="v">Blender / Cycles</span></div>
+        <div class="row"><span class="k">Source</span><span class="v">Lucid dream, recalled</span></div>
+        <div class="row"><span class="k">Series</span><span class="v">Dream Atlas / 01</span></div>
+      </div>
+    </div>
+    <div class="gallery">
+      <figure class="main reveal">
+        <img src="assets/dream-render.jpg" alt="Blender render of a dreamt room" loading="lazy" />
+        <figcaption>01 — Dream Atlas / 01</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <!-- Project 03 — Screensaver UE -->
+  <article class="project" data-screen-label="Project · UE Screensaver">
+    <div class="meta">
+      <div class="idx reveal">PRJ — 003 / Tool</div>
+      <h3 class="reveal" data-delay="1">A screensaver that <em>plays your music</em>.</h3>
+      <p class="desc reveal" data-delay="2">
+        A long-running personal project: a dynamic screensaver built in Unreal Engine that doubles as a player UI — control music on the platform of your choice without ever leaving the engine. The clip below is an early functional test, ported and revived from an old deprecated fork I rewrote against the current API and engine version.
+      </p>
+      <div class="specs reveal" data-delay="3">
+        <div class="row"><span class="k">Status</span><span class="v">In development</span></div>
+        <div class="row"><span class="k">Role</span><span class="v">Solo — design + code</span></div>
+        <div class="row"><span class="k">Stack</span><span class="v">UE · C++ · Blueprints</span></div>
+        <div class="row"><span class="k">Base</span><span class="v">Deprecated fork, revived</span></div>
+        <div class="row"><span class="k">Scope</span><span class="v">API rewrite + new UI layer</span></div>
+      </div>
+    </div>
+    <div class="gallery">
+      <figure class="main reveal">
+        <video src="assets/screensaver-test.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <figcaption>01 — Functional test / early build</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <!-- Project 04 — RDR Cinematic -->
+  <article class="project" data-screen-label="Project · Lighting Cinematic">
+    <div class="meta">
+      <div class="idx reveal">PRJ — 004 / Cinematic</div>
+      <h3 class="reveal" data-delay="1">A one-take, <em>shot from my hand</em>.</h3>
+      <p class="desc reveal" data-delay="2">
+        A short cinematic produced for our UE Lighting assignment. I lit the scene, recorded a custom mocap performance and drove the camera live with my phone over Live Link VCam — so the handheld weight is real, not faked in post. End-to-end solo: lighting, mocap, camera, edit.
+      </p>
+      <div class="specs reveal" data-delay="3">
+        <div class="row"><span class="k">Year</span><span class="v">2025</span></div>
+        <div class="row"><span class="k">Role</span><span class="v">Solo — lighting / mocap / cam</span></div>
+        <div class="row"><span class="k">Tools</span><span class="v">UE · Live Link VCam · Mocap</span></div>
+        <div class="row"><span class="k">Camera</span><span class="v">Smartphone → VCam livelink</span></div>
+        <div class="row"><span class="k">Brief</span><span class="v">UE Lighting assignment</span></div>
+      </div>
+    </div>
+    <div class="gallery">
+      <figure class="main reveal">
+        <video src="assets/rdr-cinematic.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <figcaption>01 — Cinematic / one take</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <!-- Project 05 — Indie PSX Commission -->
+  <article class="project" data-screen-label="Project · Indie PSX Cinematic">
+    <div class="meta">
+      <div class="idx reveal">PRJ — 005 / Commission</div>
+      <h3 class="reveal" data-delay="1">A <em>PSX-style</em> opener for an indie game.</h3>
+      <p class="desc reveal" data-delay="2">
+        A commissioned piece for a small indie studio targeting <em>PSX-era</em> graphics. The brief covered both the environment build and a short opening cinematic that sets the tone for the game. Most of the project is still under wraps — this short clip is the only material I'm cleared to show publicly.
+      </p>
+      <div class="specs reveal" data-delay="3">
+        <div class="row"><span class="k">Type</span><span class="v">Commissioned · indie</span></div>
+        <div class="row"><span class="k">Role</span><span class="v">Env build + cinematic</span></div>
+        <div class="row"><span class="k">Look</span><span class="v">Retro PSX</span></div>
+        <div class="row"><span class="k">Scope</span><span class="v">Opening sequence</span></div>
+        <div class="row"><span class="k">NDA</span><span class="v">Limited material shown</span></div>
+      </div>
+    </div>
+    <div class="gallery">
+      <figure class="main reveal">
+        <video src="assets/indie-cinematic.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <figcaption>01 — Excerpt / under NDA</figcaption>
+      </figure>
+    </div>
+  </article>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer data-screen-label="05 Footer">
+  <div class="foot-wrap">
+    <div class="foot-bottom">
+      <span>Portfolio jury submission · 2026</span>
+      <span id="foot-clock">— : — IST</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Clock
+  function tick() {
+    const d = new Date();
+    const opts = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Kolkata' };
+    const t = new Intl.DateTimeFormat('en-GB', opts).format(d);
+    const c = document.getElementById('clock');
+    const f = document.getElementById('foot-clock');
+    if (c) c.textContent = t + ' IST';
+    if (f) f.textContent = t + ' IST';
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // Scroll reveal — with an immediate-pass fallback for above-the-fold elements
+  const revealEls = document.querySelectorAll('.reveal');
+  const showIfVisible = (el) => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('in');
+  };
+  // Immediate sweep so above-the-fold content is never stuck invisible
+  revealEls.forEach(showIfVisible);
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => { if (!el.classList.contains('in')) io.observe(el); });
+  } else {
+    // No IO support — fall back to scroll-driven check
+    const onScroll = () => revealEls.forEach(showIfVisible);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // Belt-and-braces: re-sweep after a tick in case layout shifted (font load, etc.)
+  setTimeout(() => revealEls.forEach(showIfVisible), 250);
+  window.addEventListener('load', () => revealEls.forEach(showIfVisible));
+
+  // Tiny parallax on hero title
+  const heroTitle = document.querySelector('.hero-title');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (heroTitle && y < 700) {
+      heroTitle.style.transform = `translateY(${y * 0.12}px)`;
+      heroTitle.style.opacity = String(Math.max(0, 1 - y / 600));
+    }
+  }, { passive: true });
+</script>
+
+</body>
+</html>

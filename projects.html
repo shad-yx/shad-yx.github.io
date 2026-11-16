@@ -10,11 +10,13 @@
 *{box-sizing:border-box}
 html{background:#11100f}
 body{margin:0;padding:14px;background:#11100f}
-.gallery{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:dense;gap:12px;max-width:1800px;margin:0 auto}
+.gallery{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;max-width:1800px;margin:0 auto}
 .tile{grid-column:span 6;display:block;width:100%;padding:0;border:0;background:#201f1c;overflow:hidden;cursor:zoom-in}
-.tile.wide{grid-column:span 12}
+.tile.wide-7{grid-column:span 7}
+.tile.wide-5{grid-column:span 5}
 .tile.third{grid-column:span 4}
-.tile-media{position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;background:#25231f}
+.tile.video-start{grid-column-start:1}
+.tile-media{position:relative;display:block;width:100%;max-height:440px;aspect-ratio:16/10;overflow:hidden;background:#25231f}
 .tile img,.tile video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;transition:filter .2s ease}
 .tile-name{display:block;padding:9px 2px 0;color:#eee;font:600 16px/1.3 Arial,Helvetica,sans-serif;text-align:left}
 .tile:hover img,.tile:hover video{filter:brightness(.9)}
@@ -23,20 +25,20 @@ body{margin:0;padding:14px;background:#11100f}
 .viewer::backdrop{background:rgba(12,12,11,.96)}
 .viewer-media{display:grid;width:100%;height:100%;place-items:center}
 .viewer-media img,.viewer-media video{display:block;max-width:94vw;max-height:92vh;object-fit:contain}
-@media(max-width:760px){body{padding:8px}.gallery{gap:8px}.tile,.tile.third{grid-column:span 6}.tile.wide{grid-column:span 12}}
-@media(max-width:480px){.gallery{gap:6px}.tile,.tile.third,.tile.wide{grid-column:span 12}}
+@media(max-width:760px){body{padding:8px}.gallery{gap:8px}.tile,.tile.third,.tile.wide-7,.tile.wide-5{grid-column:span 6}.tile.video-start{grid-column-start:1}}
+@media(max-width:480px){.gallery{gap:6px}.tile,.tile.third,.tile.wide-7,.tile.wide-5{grid-column:span 12}.tile.video-start{grid-column-start:1}.tile-media{max-height:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <main class="gallery" aria-label="Project artwork">
-  <button class="tile wide" type="button" aria-label="Open Nuketown Reimagined"><span class="tile-media"><img src="assets/nuketown-render.png" alt="Surreal, overgrown suburban map environment" fetchpriority="high"></span><span class="tile-name">Nuketown Reimagined</span></button>
-  <button class="tile third" type="button" aria-label="Open Nuketown Reimagined"><span class="tile-media"><img src="assets/nuketown-concept.png" alt="Alternate concept view of Nuketown Reimagined" loading="lazy"></span><span class="tile-name">Nuketown Reimagined</span></button>
+  <button class="tile wide-7" type="button" aria-label="Open Nuketown Reimagined"><span class="tile-media"><img src="assets/nuketown-render.png" alt="Surreal, overgrown suburban map environment" fetchpriority="high"></span><span class="tile-name">Nuketown Reimagined</span></button>
+  <button class="tile wide-5" type="button" aria-label="Open Nuketown Reimagined"><span class="tile-media"><img src="assets/nuketown-concept.png" alt="Alternate concept view of Nuketown Reimagined" loading="lazy"></span><span class="tile-name">Nuketown Reimagined</span></button>
   <button class="tile third" type="button" aria-label="Open Nuketown Reimagined"><span class="tile-media"><img src="assets/nuketown-blockout.png" alt="Environment blockout for Nuketown Reimagined" loading="lazy"></span><span class="tile-name">Nuketown Reimagined</span></button>
   <button class="tile third" type="button" aria-label="Open Dream Atlas, 01"><span class="tile-media"><img src="assets/dream-render.jpg" alt="Quiet sunlit interior rebuilt from a remembered dream" loading="lazy"></span><span class="tile-name">Dream Atlas / 01</span></button>
-  <button class="tile wide" type="button" aria-label="Open UE Concept Game Cinematic - Commissioned"><span class="tile-media"><video src="assets/indie-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Commissioned UE concept game cinematic"></video></span><span class="tile-name">UE Concept Game Cinematic - Commissioned</span></button>
-  <button class="tile wide" type="button" aria-label="Open UE MetaHuman Mocap"><span class="tile-media"><video src="assets/rdr-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Unreal Engine MetaHuman motion capture cinematic"></video></span><span class="tile-name">UE MetaHuman Mocap</span></button>
-  <button class="tile wide" type="button" aria-label="Open Custom Spotify API Calling in UE - Forked and Updated"><span class="tile-media"><video src="assets/screensaver-test.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Custom Spotify API calling in Unreal Engine"></video></span><span class="tile-name">Custom Spotify API Calling in UE - Forked and Updated</span></button>
+  <button class="tile third video-start" type="button" aria-label="Open UE Concept Game Cinematic - Commissioned"><span class="tile-media"><video src="assets/indie-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Commissioned UE concept game cinematic"></video></span><span class="tile-name">UE Concept Game Cinematic - Commissioned</span></button>
+  <button class="tile third" type="button" aria-label="Open UE MetaHuman Mocap"><span class="tile-media"><video src="assets/rdr-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Unreal Engine MetaHuman motion capture cinematic"></video></span><span class="tile-name">UE MetaHuman Mocap</span></button>
+  <button class="tile third" type="button" aria-label="Open Custom Spotify API Calling in UE - Forked and Updated"><span class="tile-media"><video src="assets/screensaver-test.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Custom Spotify API calling in Unreal Engine"></video></span><span class="tile-name">Custom Spotify API Calling in UE - Forked and Updated</span></button>
 </main>
 <dialog class="viewer" aria-label="Project artwork preview">
   <div class="viewer-media" id="viewerMedia"></div>

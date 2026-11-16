@@ -15,7 +15,7 @@ body{margin:0;padding:14px;background:#11100f}
 .tile.wide-7{grid-column:span 7}
 .tile.wide-5{grid-column:span 5}
 .tile.third{grid-column:span 4}
-.tile.video-start{grid-column-start:1}
+.tile.row-start,.tile.video-start{grid-column-start:1}
 .tile-media{position:relative;display:block;width:100%;max-height:440px;aspect-ratio:16/10;overflow:hidden;background:#25231f}
 .tile img,.tile video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;transition:filter .2s ease}
 .tile-name{display:block;padding:9px 2px 0;color:#eee;font:600 16px/1.3 Arial,Helvetica,sans-serif;text-align:left}
@@ -36,6 +36,9 @@ body{margin:0;padding:14px;background:#11100f}
   <button class="tile wide-5" type="button" aria-label="Open Nuketown Reimagined"><span class="tile-media"><img src="assets/nuketown-concept.png" alt="Alternate concept view of Nuketown Reimagined" loading="lazy"></span><span class="tile-name">Nuketown Reimagined</span></button>
   <button class="tile third" type="button" aria-label="Open Nuketown Reimagined"><span class="tile-media"><img src="assets/nuketown-blockout.png" alt="Environment blockout for Nuketown Reimagined" loading="lazy"></span><span class="tile-name">Nuketown Reimagined</span></button>
   <button class="tile third" type="button" aria-label="Open Dream Atlas, 01"><span class="tile-media"><img src="assets/dream-render.jpg" alt="Quiet sunlit interior rebuilt from a remembered dream" loading="lazy"></span><span class="tile-name">Dream Atlas / 01</span></button>
+  <button class="tile third row-start" type="button" aria-label="Open Custom Sculpt to MetaHuman"><span class="tile-media"><img src="assets/ue/image-12.png" alt="Custom sculpt refined as an Unreal Engine MetaHuman" loading="lazy"></span><span class="tile-name">Custom Sculpt to MetaHuman</span></button>
+  <button class="tile third" type="button" aria-label="Open Custom Sculpt to MetaHuman"><span class="tile-media"><img src="assets/ue/IMG-20260725-WA0056.jpeg" alt="Custom sculpt to MetaHuman workflow in Unreal Engine" loading="lazy"></span><span class="tile-name">Custom Sculpt to MetaHuman</span></button>
+  <button class="tile third" type="button" aria-label="Open Custom Sculpt to MetaHuman"><span class="tile-media"><img src="assets/ue/IMG-20260725-WA0058.jpeg" alt="MetaHuman character created from a custom sculpt" loading="lazy"></span><span class="tile-name">Custom Sculpt to MetaHuman</span></button>
   <button class="tile third video-start" type="button" aria-label="Open UE Concept Game Cinematic - Commissioned"><span class="tile-media"><video src="assets/indie-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Commissioned UE concept game cinematic"></video></span><span class="tile-name">UE Concept Game Cinematic - Commissioned</span></button>
   <button class="tile third" type="button" aria-label="Open UE MetaHuman Mocap"><span class="tile-media"><video src="assets/rdr-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Unreal Engine MetaHuman motion capture cinematic"></video></span><span class="tile-name">UE MetaHuman Mocap</span></button>
   <button class="tile third" type="button" aria-label="Open Custom Spotify API Calling in UE - Forked and Updated"><span class="tile-media"><video src="assets/screensaver-test.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Custom Spotify API calling in Unreal Engine"></video></span><span class="tile-name">Custom Spotify API Calling in UE - Forked and Updated</span></button>

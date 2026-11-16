@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f1eee7">
+<meta name="description" content="A visual gallery of 3D environments and cinematic work by Vansh Ru.">
+<title>Project gallery | Vansh Ru</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f1eee7;--ink:#20211e;--muted:#77786f;--line:#d8d4ca;--accent:#d85a37;--sans:"Archivo",Arial,sans-serif;--serif:"Instrument Serif",Georgia,serif;--mono:"IBM Plex Mono",monospace}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.gallery{width:min(1440px,calc(100% - 64px));margin:0 auto;padding:32px 0 48px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:42px 18px;align-items:start}
+.tile{grid-column:span 6;min-width:0;margin:0}
+.tile.wide-7{grid-column:span 7}
+.tile.wide-5{grid-column:span 5}
+.tile.third{grid-column:span 4}
+.tile button{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:zoom-in}
+.tile-media{display:block;overflow:hidden;background:#d9d5ca;aspect-ratio:16/10}
+.tile img,.tile video{display:block;width:100%;height:100%;object-fit:cover;transition:filter .25s ease}
+.tile button:hover img,.tile button:hover video{filter:brightness(.91) saturate(1.04)}
+.tile button:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
+.tile-caption{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:12px 0 0;border-top:1px solid var(--line);margin-top:12px}
+.tile-caption strong{font:italic 27px/1.1 var(--serif);font-weight:400;transition:color .2s}
+.tile button:hover .tile-caption strong{color:var(--accent)}
+.tile-caption span{color:var(--muted);font:10px/1.4 var(--mono);letter-spacing:.08em;text-align:right;text-transform:uppercase}
+.viewer{width:min(1280px,94vw);max-width:none;max-height:92vh;padding:0;border:0;background:#171816;color:#f1eee7}
+.viewer::backdrop{background:rgba(20,20,18,.88)}
+.viewer-inner{display:grid;grid-template-rows:auto 1fr auto;max-height:92vh}
+.viewer-head,.viewer-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 20px}
+.viewer-head{border-bottom:1px solid #41413b}
+.viewer-title{font:italic 30px/1 var(--serif);font-weight:400}
+.viewer-detail,.viewer-index{color:#b7b7ad;font:10px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.viewer-media{display:grid;place-items:center;min-height:180px;max-height:calc(92vh - 122px);background:#0d0e0c}
+.viewer-media img,.viewer-media video{display:block;max-width:100%;max-height:calc(92vh - 122px);object-fit:contain}
+.viewer-foot{border-top:1px solid #41413b}
+.viewer-controls{display:flex;gap:8px}
+.viewer-control{min-width:42px;padding:9px 12px;border:1px solid #51514a;background:transparent;color:#f1eee7;font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.viewer-control:hover,.viewer-control:focus-visible{border-color:var(--accent);color:#fff}
+.viewer-close{font-size:15px}
+@media(max-width:760px){.gallery{width:calc(100% - 32px);padding-top:16px;gap:28px 12px}.tile,.tile.wide-7,.tile.wide-5{grid-column:span 6}.tile.third{grid-column:span 6}.tile-caption{align-items:start;flex-direction:column;gap:4px}.tile-caption strong{font-size:24px}.tile-caption span{text-align:left}.viewer-head,.viewer-foot{padding:12px}.viewer-title{font-size:25px}.viewer-detail{font-size:9px}}
+@media(max-width:480px){.gallery{width:calc(100% - 24px);gap:24px 10px}.tile,.tile.wide-7,.tile.wide-5,.tile.third{grid-column:span 12}.tile-media{aspect-ratio:16/9}.tile-caption{flex-direction:row;align-items:baseline}.tile-caption strong{font-size:26px}.tile-caption span{text-align:right}.viewer-head{align-items:start}.viewer-title{font-size:23px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="gallery" aria-label="Project gallery">
+  <figure class="tile wide-7" data-title="Music in motion" data-detail="Interactive tool / current build"><button type="button" aria-label="Zoom Music in motion"><span class="tile-media"><video src="assets/screensaver-test.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Music-reactive Unreal Engine screensaver"></video></span><span class="tile-caption"><strong>Music in motion</strong><span>Interactive tool</span></span></button></figure>
+  <figure class="tile wide-5" data-title="Nuketown: Overgrown" data-detail="Environment / final render"><button type="button" aria-label="Zoom Nuketown: Overgrown, final render"><span class="tile-media"><img src="assets/nuketown-render.png" alt="Surreal, overgrown suburban map environment" fetchpriority="high"></span><span class="tile-caption"><strong>Nuketown: Overgrown</strong><span>Final render</span></span></button></figure>
+  <figure class="tile third" data-title="Nuketown: Overgrown" data-detail="Environment / alternate view"><button type="button" aria-label="Zoom Nuketown: Overgrown, alternate view"><span class="tile-media"><img src="assets/nuketown-concept.png" alt="Alternate concept view of Nuketown: Overgrown" loading="lazy"></span><span class="tile-caption"><strong>Nuketown: Overgrown</strong><span>Alternate view</span></span></button></figure>
+  <figure class="tile third" data-title="Nuketown: Overgrown" data-detail="Environment / blockout"><button type="button" aria-label="Zoom Nuketown: Overgrown, blockout"><span class="tile-media"><img src="assets/nuketown-blockout.png" alt="Environment blockout for Nuketown: Overgrown" loading="lazy"></span><span class="tile-caption"><strong>Nuketown: Overgrown</strong><span>Blockout</span></span></button></figure>
+  <figure class="tile third" data-title="Dream Atlas / 01" data-detail="3D render / Blender Cycles"><button type="button" aria-label="Zoom Dream Atlas, 01"><span class="tile-media"><img src="assets/dream-render.jpg" alt="Quiet, sunlit interior rebuilt from a remembered dream" loading="lazy"></span><span class="tile-caption"><strong>Dream Atlas / 01</strong><span>3D render</span></span></button></figure>
+  <figure class="tile wide-5" data-title="One take, handheld" data-detail="Cinematic / motion capture"><button type="button" aria-label="Zoom One take, handheld"><span class="tile-media"><video src="assets/rdr-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="One-take handheld cinematic"></video></span><span class="tile-caption"><strong>One take, handheld</strong><span>Cinematic</span></span></button></figure>
+  <figure class="tile wide-7" data-title="Indie game intro" data-detail="PSX style / approved excerpt"><button type="button" aria-label="Zoom Indie game intro"><span class="tile-media"><video src="assets/indie-cinematic.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Retro-inspired indie game cinematic"></video></span><span class="tile-caption"><strong>Indie game intro</strong><span>Approved excerpt</span></span></button></figure>
+</main>
+<dialog class="viewer" aria-labelledby="viewerTitle">
+  <div class="viewer-inner">
+    <header class="viewer-head"><strong class="viewer-title" id="viewerTitle"></strong><span class="viewer-detail" id="viewerDetail"></span></header>
+    <div class="viewer-media" id="viewerMedia"></div>
+    <footer class="viewer-foot"><span class="viewer-index" id="viewerIndex"></span><div class="viewer-controls"><button class="viewer-control" id="previousItem" type="button" aria-label="Previous project">Prev</button><button class="viewer-control" id="nextItem" type="button" aria-label="Next project">Next</button><button class="viewer-control viewer-close" id="closeViewer" type="button" aria-label="Close viewer">&times;</button></div></footer>
+  </div>
+</dialog>
+<script>
+const tiles=[...document.querySelectorAll(".tile")],viewer=document.querySelector(".viewer"),mediaBox=document.querySelector("#viewerMedia"),titleBox=document.querySelector("#viewerTitle"),detailBox=document.querySelector("#viewerDetail"),indexBox=document.querySelector("#viewerIndex");let active=0;
+function showItem(index){active=(index+tiles.length)%tiles.length;const tile=tiles[active],source=tile.querySelector("img,video"),copy=source.cloneNode(true);copy.removeAttribute("loading");copy.removeAttribute("autoplay");copy.removeAttribute("loop");copy.controls=source.tagName==="VIDEO";if(copy.tagName==="VIDEO"){copy.muted=true;copy.playsInline=true}mediaBox.replaceChildren(copy);titleBox.textContent=tile.dataset.title;detailBox.textContent=tile.dataset.detail;indexBox.textContent=String(active+1).padStart(2,"0")+" / "+String(tiles.length).padStart(2,"0");if(copy.tagName==="VIDEO")copy.play().catch(()=>{})}
+tiles.forEach((tile,index)=>tile.querySelector("button").addEventListener("click",()=>{showItem(index);viewer.showModal()}));
+document.querySelector("#closeViewer").addEventListener("click",()=>viewer.close());document.querySelector("#previousItem").addEventListener("click",()=>showItem(active-1));document.querySelector("#nextItem").addEventListener("click",()=>showItem(active+1));viewer.addEventListener("click",event=>{if(event.target===viewer)viewer.close()});viewer.addEventListener("close",()=>mediaBox.replaceChildren());document.addEventListener("keydown",event=>{if(!viewer.open)return;if(event.key==="ArrowLeft")showItem(active-1);if(event.key==="ArrowRight")showItem(active+1)});
+</script>
+</body>
+</html>
